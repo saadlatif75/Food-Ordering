@@ -16,7 +16,11 @@ export default function StackNavigator() {
           name="LoginScreen"
           component={LoginScreen}
         />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="HomeScreen"
+          component={HomeScreen}
+        />
         <Stack.Screen
           options={{headerShown: false}}
           name="SplashScreen"
