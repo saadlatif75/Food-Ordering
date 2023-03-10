@@ -1,4 +1,6 @@
 import {
+  Image,
+  PermissionsAndroid,
   ScrollView,
   StyleSheet,
   Text,
@@ -7,18 +9,58 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 export default function Add() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
+  const [imageData, setimageData] = useState(null);
   // const [name, setName] = useState('');
   // const [name, setName] = useState('');
-
+  const lauchGallery = async () => {
+    const result = await launchImageLibrary({mediaType: 'photo'});
+    if (result.didCancel) {
+    } else {
+      console.log(result);
+      setimageData(result);
+    }
+  };
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'Cool Photo App Camera Permission',
+          message:
+            'Cool Photo App needs access to your camera ' +
+            'so you can take awesome pictures.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the camera');
+        lauchGallery();
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Add Item</Text>
       </View>
+      {console.log('image data==', imageData)}
+      {imageData !== null ? (
+        <Image
+          source={{uri: imageData.assests[0].uri}}
+          style={{width: '90%', height: '30%'}}
+        />
+      ) : null}
       <TextInput
         placeholder="Enter Item Name"
         style={styles.inputStyle}
@@ -53,7 +95,7 @@ export default function Add() {
       <TouchableOpacity
         style={styles.pickBtn}
         onPress={() => {
-          // requestCameraPermission();
+          requestCameraPermission();
         }}>
         <Text>Pick Image From Gallery</Text>
       </TouchableOpacity>

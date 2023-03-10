@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  PermissionsAndroid,
+} from 'react-native';
 import React, {useState} from 'react';
 import Item from '../../Tabs/Add';
 import Transactions from '../../Tabs/Item';
